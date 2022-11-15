@@ -1,7 +1,17 @@
 from typing import Dict, List, Tuple
 
 class City:
-    ...
+    def city(self, name, state, country, number, latitude, longitude):
+       self.name=name 
+       self.state=state 
+       self.country=country
+       self.number=number
+       self.latitude=latitude
+       self.longitude=longitude
+
+
+
+    
     def distance_to(self, other: 'City') -> float:
         raise NotImplementedError
 
