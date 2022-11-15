@@ -65,8 +65,8 @@ class CityCollection:
 
     def total_distance_travel_to(self, city: City) -> float:
         td=0
-        for index in range(1,len(self)):
-            td+=self[index].distance_to(city)*self[index].number
+        for index in self.cities:
+            td+=index.distance_to(city)*index.number
         return td
 
     def travel_by_country(self, city: City) -> Dict[str, float]:
