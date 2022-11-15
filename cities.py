@@ -1,7 +1,10 @@
 from typing import Dict, List, Tuple
+from dataclasses import dataclass
+import math
 
+@dataclass
 class City:
-    def city(self, name, state, country, number, latitude, longitude):
+    def __init__(self, name: str, state: str, country: str, number: int, latitude: float, longitude: float):
        self.name=name 
        self.state=state 
        self.country=country
@@ -9,15 +12,34 @@ class City:
        self.latitude=latitude
        self.longitude=longitude
 
-
-
     
     def distance_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        x1=self.latitude
+        y1=self.longitude
+        x2=other.latitude
+        y2=other.longitude
+        d=12742*math.asin(math.sqrt(math.pow(math.sin(0.5*(x1-x2)),2)+math.cos(x1)*math.cos(x2)*math.pow(math.sin(0.5*(y1-y2)),2)))
+        return d
 
     def co2_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        x1=self.latitude
+        y1=self.longitude
+        x2=other.latitude
+        y2=other.longitude
+        d=12742*math.asin(math.sqrt(math.pow(math.sin(0.5*(x1-x2)),2)+math.cos(x1)*math.cos(x2)*math.pow(math.sin(0.5*(y1-y2)),2)))
+        co2=0
+        if(d<=1000):
+            co2=200*d*self.number
+        elif(d<=8000):
+            co2=250*d*self.number
+        else:
+            co2=300*d*self.number
 
+        return co2
+
+        
+
+@dataclass
 class CityCollection:
     ...
 
