@@ -43,7 +43,7 @@ class City:
 
 @dataclass
 class CityCollection:
-    def __init__(self, cities: List[str]):
+    def __init__(self, cities):
        self.cities=cities
           
 
@@ -59,7 +59,7 @@ class CityCollection:
 
     def total_attendees(self) -> int:
         count=0
-        for index in self:
+        for index in self.cities:
             count+=index.number
         return count
 
