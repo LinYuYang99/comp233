@@ -59,8 +59,8 @@ class CityCollection:
 
     def total_attendees(self) -> int:
         count=0
-        for index in range(1,len(self)):
-            count+=self[index].number
+        for index in self:
+            count+=index.number
         return count
 
     def total_distance_travel_to(self, city: City) -> float:
