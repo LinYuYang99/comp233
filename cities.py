@@ -72,12 +72,12 @@ class CityCollection:
     def travel_by_country(self, city: City) -> Dict[str, float]:
         list1=self.countries()
         list2=[]
-        list2[0]=self[1].distance_to(city)
-        for index in range(2,len(self)):
-            if(self[index].country)==list2[len(list2)-1]:
-               list2.append(self[index].distance_to(city))
-            else:
-               list2[len(list)-1]+=self[index].distance_to(city)
+        for i in range (len(list1)):
+            count=0.0
+            for index in self.cities:
+                if(index.country==list1[i]):
+                    count+=index.distance_to(city)
+            list2.append(count)   
         dict_tbc = dict(zip(list1, list2))
         return dict_tbc
 
