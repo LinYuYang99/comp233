@@ -4,13 +4,19 @@ import math
 
 @dataclass
 class City:
-    def __init__(self, name: str, state: str, country: str, number: int, latitude: float, longitude: float):
+    def __init__(self, name: str, country: str, number: int, latitude: float, longitude: float):
        self.name=name 
-       self.state=state 
        self.country=country
        self.number=number
        self.latitude=latitude
        self.longitude=longitude
+
+    def validcity(self):
+        if(self.number<0):
+            return False
+        if(self.latitude<-90 or self.latitude>90 or self.longitude<-180 or self.longitude>180):
+            return False
+        return True  
 
     
     def distance_to(self, other: 'City') -> float:
@@ -22,11 +28,7 @@ class City:
         return d
 
     def co2_to(self, other: 'City') -> float:
-        x1=self.latitude
-        y1=self.longitude
-        x2=other.latitude
-        y2=other.longitude
-        d=12742*math.asin(math.sqrt(math.pow(math.sin(0.5*(x1-x2)),2)+math.cos(x1)*math.cos(x2)*math.pow(math.sin(0.5*(y1-y2)),2)))
+        d=self.distance_to(other)
         co2=0
         if(d<=1000):
             co2=200*d*self.number
@@ -41,28 +43,70 @@ class City:
 
 @dataclass
 class CityCollection:
-    ...
+    def __init__(self, cities: List[str]):
+       self.cities=cities
+          
 
     def countries(self) -> List[str]:
-        raise NotImplementedError
+        countries_list = sorted([x.country for x in self.cities])
+        list=[]
+        a=" "
+        for i in countries_list:
+            if(i!=a):
+                list.append(i)
+                a=i
+        return list
 
     def total_attendees(self) -> int:
-        raise NotImplementedError
+        count=0
+        for index in range(1,len(self)):
+            count+=self[index].number
+        return count
 
     def total_distance_travel_to(self, city: City) -> float:
-        raise NotImplementedError
+        td=0
+        for index in range(1,len(self)):
+            td+=self[index].distance_to(city)*self[index].number
+        return td
 
     def travel_by_country(self, city: City) -> Dict[str, float]:
-        raise NotImplementedError
+        list1=self.countries()
+        list2=[]
+        list2[0]=self[1].distance_to(city)
+        for index in range(2,len(self)):
+            if(self[index].country)==list2[len(list2)-1]:
+               list2.append(self[index].distance_to(city))
+            else:
+               list2[len(list)-1]+=self[index].distance_to(city)
+        dict_tbc = dict(zip(list1, list2))
+        return dict_tbc
+
 
     def total_co2(self, city: City) -> float:
-        raise NotImplementedError
+        tc=0
+        for index in range(1,len(self)):
+            tc+=self[index].co2_to(city)
+        return tc
+        
 
     def co2_by_country(self, city: City) -> Dict[str, float]:
-        raise NotImplementedError
+        list1=self.countries()
+        list2=[]
+        list2[0]=self[1].co2_to(city)
+        for index in range(2,len(self)):
+            if(self[index].country)==list2[len(list2)-1]:
+               list2.append(self[index].co2_to(city))
+            else:
+               list2[len(list)-1]+=self[index].co2_to(city)
+        dict_cbc = dict(zip(list1, list2))
+        return dict_cbc
 
     def summary(self, city: City):
-        raise NotImplementedError
+        x=int(round(self.total_co2(city)/1000,0))
+        z=int(round(self.total_distance_travel_to(city),0))
+        print("Host city:",city.name,"(",city.country,")")
+        print("Total CO2:",x)
+        print("Total attendees travelling to",city.name,"from",len(self)-1,"different cities:",z)
 
     def sorted_by_emissions(self) -> List[Tuple[str, float]]:
         raise NotImplementedError
