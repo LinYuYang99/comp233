@@ -22,10 +22,10 @@ class City:
 
     
     def distance_to(self, other: 'City') -> float:
-        x1=self.latitude
-        y1=self.longitude
-        x2=other.latitude
-        y2=other.longitude
+        x1=math.radian(self.latitude)
+        y1=math.radian(self.longitude)
+        x2=math.radian(other.latitude)
+        y2=math.radian(other.longitude)
         d=12742*math.asin(math.sqrt(math.pow(math.sin(0.5*(x1-x2)),2)+math.cos(x1)*math.cos(x2)*math.pow(math.sin(0.5*(y1-y2)),2)))
         return d
 
