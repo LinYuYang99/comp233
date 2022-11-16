@@ -1,6 +1,8 @@
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
 import math
+import matplotlib.pyplot as plt
+
 
 @dataclass
 class City:
@@ -106,12 +108,45 @@ class CityCollection:
         x=int(round(self.total_co2(city)/1000,0))
         z=int(round(self.total_distance_travel_to(city),0))
         print("Host city:",city.name,"(",city.country,")")
-        print("Total CO2:",x)
+        print("Total CO2:",x," tonnes")
         print("Total attendees travelling to",city.name,"from",len(list1),"different cities:",z)
 
     def sorted_by_emissions(self) -> List[Tuple[str, float]]:
-        raise NotImplementedError
+        list3=[]
+        for index in self.cities:
+            a=index.name
+            b=self.total_co2(index)
+            list3.append([a,b])
+        list4=sorted(list3, key=lambda s: s[1])
+        list5=[]
+        for index in range(len(self.cities)):
+            a=list4[index][0]
+            b=list4[index][1]
+            list5.append((a,b))
+        
+        return list5      
+        
 
     def plot_top_emitters(self, city: City, n: int, save: bool):
-        raise NotImplementedError
+        list1=self.countries()
+        list2=[]
+        for i in range (len(list1)):
+            count=0.0
+            for index in self.cities:
+                if(index.country==list1[i]):
+                    count+=index.co2_to(city)*index.number
+            list2.append([list1[i],count])
+        list7=sorted(list2, key=lambda s: s[1],reverse=True)
+        for index in range (n,len(list2)):
+            list7[n][1]+=list7[index][1]
+        list7[n][0]="All other countries"
+        s='total emissions from each country for top '
+        s+=str(n)
+        plt.title(s)
+        plt.ylabel('total emissions (tonnes CO2)')
+        for index in range (n+1):
+            plt.bar(list7[index][0],list7[index][1]/1000)        
+        a=city.name
+        b = a.casefold()
+        return plt.show()
 
