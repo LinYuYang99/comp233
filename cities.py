@@ -147,6 +147,6 @@ class CityCollection:
         for index in range (n+1):
             plt.bar(list7[index][0],list7[index][1]/1000)   
         if(save):     
-            plt.savefig(f'{city.city.lower().replace(" ", "_")}.png')
+            plt.savefig(f'{city.name.lower().replace(" ", "_")}.png')
         return plt.show()
 
