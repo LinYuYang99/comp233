@@ -108,7 +108,7 @@ class CityCollection:
         x=int(round(self.total_co2(city)/1000,0))
         z=int(round(self.total_distance_travel_to(city),0))
         print("Host city:",city.name,"(",city.country,")")
-        print("Total CO2:",x," tonnes")
+        print("Total CO2:",x,"tonnes")
         print("Total attendees travelling to",city.name,"from",len(list1),"different cities:",z)
 
     def sorted_by_emissions(self) -> List[Tuple[str, float]]:
